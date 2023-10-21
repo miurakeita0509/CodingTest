@@ -65,6 +65,22 @@ def test_refund_normal(amount, expected_value):
 
 
 @pytest.mark.parametrize(
+    ("amount", "expected_value"),
+    [
+        (1, "このお金は受け付けられません。1円を返金します。"),
+        (5, "このお金は受け付けられません。5円を返金します。"),
+        (2000, "このお金は受け付けられません。2000円を返金します。"),
+        (5000, "このお金は受け付けられません。5000円を返金します。"),
+        (10000, "このお金は受け付けられません。10000円を返金します。"),
+    ],
+)
+def test_money_exception_error(amount, expected_value):
+    vm = VendingMachine()
+    massage = vm.insert_coin_or_payout(amount)
+    assert massage == expected_value
+
+
+@pytest.mark.parametrize(
     ("input_str", "expected_value"),
     [
         ("10", 10),

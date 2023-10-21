@@ -1,4 +1,5 @@
 # step1 自販機お金の処理
+# step2 自販機は扱えないお金を弾くことができる
 MENU_PROMPT = (
     "メニュー:\n"
     "1. お金を投入します。\n"
@@ -19,6 +20,8 @@ class VendingMachine:
         if amount_integer in [10, 50, 100, 500, 1000]:
             self.total_entry_amount += amount_integer
             return f"{amount_integer}円を投入しました。"
+        elif amount_integer in [1, 5, 2000, 5000, 10000]:  # 実在するお金
+            return f"このお金は受け付けられません。{amount_integer}円を返金します。"
         else:
             return "無効なお金です。"
 
