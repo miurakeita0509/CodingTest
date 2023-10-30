@@ -26,6 +26,34 @@ class VendingMachine:
         else:
             return "釣り銭はありません。"
 
+    # ジュースの購入
+    def purchase(self, juice_name, juice_management):
+        if juice_management.can_purchase(juice_name, self.total_entry_amount):
+            juice_price = juice_management.get_juice_info(juice_name)["price"]
+            self.total_entry_amount -= juice_price
+            juice_management.purchase_juice(juice_name)
+            return f"{juice_name}を購入しました。"
+        else:
+            return f"{juice_name}は購入できません。"
+
+    def select_juice_purchase(self, juice_management):
+        while True:
+            print("\n")
+            index_name_map = juice_management.show_juice_menu(self)
+            select = input("どのドリンクを購入しますか。: ")
+            if select.isdigit() and int(select) == 0:
+                print("購入をやめます。")
+                return "cancel", None
+            if select.isdigit() and int(select) in index_name_map:
+                selected_juice = index_name_map[int(select)]
+                result = self.purchase(selected_juice, juice_management)
+                if "購入しました。" in result:
+                    return "success", selected_juice
+                else:
+                    return "failed", selected_juice
+            else:
+                return "invalid_select", None
+
 
 def isinteger_insert(amount):
     try:
