@@ -41,7 +41,7 @@ def test_insert_coin_or_payout_normal(amount, expected_value):
         (0.1, 0),  # 小数点
     ],
 )
-def test_insert_coin_or_payout_exception(amount, expected_value):
+def test_insert_coin_or_payout_abnormal(amount, expected_value):
     vm = VendingMachine()
     vm.insert_coin_or_payout(amount)
     assert vm.get_total_amount() == expected_value
@@ -74,8 +74,8 @@ def test_refund_normal(amount, expected_value):
 )
 def test_money_exception_error(amount, expected_value):
     vm = VendingMachine()
-    massage = vm.insert_coin_or_payout(amount)
-    assert massage == expected_value
+    message = vm.insert_coin_or_payout(amount)
+    assert message == expected_value
 
 
 @pytest.mark.parametrize(
