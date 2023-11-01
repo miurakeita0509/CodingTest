@@ -1,5 +1,5 @@
-from VendingMachine import VendingMachine, isinteger_insert
-from JuiceManagement import JuiceManagement
+from VendingMachine import VendingMachine
+
 
 MENU_PROMPT = (
     "メニュー:\n"
@@ -15,8 +15,7 @@ MENU_PROMPT = (
 
 def main():
     # 自販機を作成
-    creation_vending_machine = VendingMachine()
-    juice_management = JuiceManagement()
+    vending_machine = VendingMachine()
 
     while True:
         print(MENU_PROMPT, end="")
@@ -24,34 +23,36 @@ def main():
 
         if selection == "1":
             amount = input("お金を入れてください。: ")
-            amount_integer = isinteger_insert(amount)
+            amount_integer = vending_machine.isinteger_amount(amount)
 
             if amount_integer is None:
                 print("無効な入力です。お金を入れてください。")
             else:
-                print(creation_vending_machine.insert_coin_or_payout(amount_integer))
+                print(vending_machine.insert_coin_or_payout(amount_integer))
+
         elif selection == "2":
-            total_entry_amount = creation_vending_machine.get_total_amount()
+            total_entry_amount = vending_machine.get_total_amount()
             print(f"投入金額の総計は{total_entry_amount}円です。")
+
         elif selection == "3":
-            print(creation_vending_machine.refund())
+            print(vending_machine.refund())
+
         elif selection == "4":
             while True:
-                status, selected_juice = creation_vending_machine.select_juice_purchase(
-                    juice_management
-                )
+                status, selected_juice = vending_machine.select_juice_purchase()
                 if status == "success":
                     print(f"{selected_juice}を購入しました。")
                     break
                 elif status == "failed":
                     print(f"{selected_juice}は購入できません。再度選択してください。")
                 elif status == "cancel":
+                    print("購入をやめます。")
                     break
                 elif status == "invalid_select":
                     print("無効な選択です。再度選択してください。")
 
         elif selection == "5":
-            current_sales = juice_management.get_sales()
+            current_sales = vending_machine.get_sales()
             print(f"現在の売上は{current_sales}円です。")
         elif selection == "6":
             print("自販機を終了します。")
