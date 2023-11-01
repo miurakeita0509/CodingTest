@@ -1,11 +1,13 @@
 from JuiceManagement import JuiceManagement
 from MoneyManagement import MoneyManagement
+from DataStore import DataStore
 
 
 class VendingMachine:
     def __init__(self):
         self.juice_management = JuiceManagement()
         self.money_management = MoneyManagement()
+        self.data_store = DataStore()
 
     # 整数選定
     def isinteger_amount(self, amount):
@@ -23,11 +25,9 @@ class VendingMachine:
     def refund(self):
         return self.money_management.refund()
 
-    # select4保留
-
     # 売上を返す
     def get_sales(self):
-        return self.juice_management.get_sales()
+        return self.data_store.get_sales()
 
     # ジュースの情報を返す
     def get_juice_info(self):
@@ -40,7 +40,8 @@ class VendingMachine:
         ):
             juice_price = self.juice_management.get_juice_info(juice_name)["price"]
             self.money_management.total_entry_amount -= juice_price
-            self.juice_management.purchase_juice(juice_name)
+            self.juice_management.decrease_juice_stock(juice_name)
+            self.data_store.record_juice_sales(self.juice_management, juice_name)
             return f"{juice_name}を購入しました。"
         else:
             return f"{juice_name}は購入できません。"
