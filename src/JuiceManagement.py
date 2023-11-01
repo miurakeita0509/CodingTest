@@ -3,7 +3,6 @@ class JuiceManagement:
         self.juice = {
             "コーラ": {"name": "コーラ", "price": 120, "stock": 5},
         }
-        self.sales = 0
 
     # ジュースの情報を返す
     def get_juice_info(self, juice_name=None):
@@ -18,26 +17,21 @@ class JuiceManagement:
             return False  # ジュースが存在しない
         return (amount >= juice["price"]) and (juice["stock"] > 0)
 
-    # step4の2行目 在庫を減らし売上を立てる
-    def purchase_juice(self, juice_name):
+    # step4の2行目 在庫を減らす
+    def decrease_juice_stock(self, juice_name):
         if self.juice[juice_name]["stock"] > 0:
             self.juice[juice_name]["stock"] -= 1
-            self.sales += self.juice[juice_name]["price"]
             return True
         return False
 
-    # 売上を返す
-    def get_sales(self):
-        return self.sales
-
     # 購入可能かどうかの表示
-    def show_juice_menu(self, creation_vending_mashine):
-        avairabl_juice = self.get_juice_info()
+    def show_juice_menu(self, money_management):
+        avairable_juice = self.get_juice_info()
         index_name_map = {}
         print("0. 購入をやめますか？")
-        for index, (name, juice) in enumerate(avairabl_juice.items(), 1):
+        for index, (name, juice) in enumerate(avairable_juice.items(), 1):
             if (
-                creation_vending_mashine.get_total_amount() >= juice["price"]
+                money_management.get_total_amount() >= juice["price"]
                 and juice["stock"] > 0
             ):
                 status = "購入可能です。"
