@@ -14,8 +14,9 @@ class JuiceManagement:
     def can_purchase(self, juice_name, amount):
         juice = self.get_juice_info(juice_name)
         if not juice:
-            return False  # ジュースが存在しない
-        return (amount >= juice["price"]) and (juice["stock"] > 0)
+            return None  # ジュースが存在しない
+        trueorfalse = (amount >= juice["price"]) and (juice["stock"] > 0)
+        return trueorfalse
 
     # step4の2行目 在庫を減らす
     def decrease_juice_stock(self, juice_name):
