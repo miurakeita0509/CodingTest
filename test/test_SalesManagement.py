@@ -6,9 +6,7 @@ from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 sys.path.append(str(Path(__file__).parent.parent / "src"))
-from src.JuiceManagement import JuiceManagement
 from src.SalesManagement import SalesManagement
-from src.VendingMachine import VendingMachine
 
 
 class MockJuiceManagement:
