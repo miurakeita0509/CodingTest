@@ -10,14 +10,15 @@ class JuiceManagement:
             return self.juice.get(juice_name)
         return self.juice
 
-    # step4の1行目
+    # step4 投入金額、在庫の点で、コーラが購入できるかどうか
     def can_purchase(self, juice_name, amount):
         juice = self.get_juice_info(juice_name)
         if not juice:
-            return False  # ジュースが存在しない
-        return (amount >= juice["price"]) and (juice["stock"] > 0)
+            return None  # ジュースが存在しない
+        trueorfalse = (amount >= juice["price"]) and (juice["stock"] > 0)
+        return trueorfalse
 
-    # step4の2行目 在庫を減らす
+    # step4 在庫を減らす
     def decrease_juice_stock(self, juice_name):
         if self.juice[juice_name]["stock"] > 0:
             self.juice[juice_name]["stock"] -= 1
@@ -25,15 +26,12 @@ class JuiceManagement:
         return False
 
     # 購入可能かどうかの表示
-    def show_juice_menu(self, money_management):
+    def show_juice_menu(self, total_amount):
         avairable_juice = self.get_juice_info()
         index_name_map = {}
         print("0. 購入をやめますか？")
         for index, (name, juice) in enumerate(avairable_juice.items(), 1):
-            if (
-                money_management.get_total_amount() >= juice["price"]
-                and juice["stock"] > 0
-            ):
+            if total_amount >= juice["price"] and juice["stock"] > 0:
                 status = "購入可能です。"
             elif juice["stock"] == 0:
                 status = "在庫がありません。"
