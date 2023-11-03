@@ -171,6 +171,8 @@ def test_main_selection_abnormal(capsys, monkeypatch, input_str, exception_outpu
             + "\n\n"
             + "0. 購入をやめますか？\n"
             + "1.コーラ:購入可能です。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
             + "どのドリンクを購入しますか。: コーラを購入しました。\n"
             "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
         ),
@@ -180,6 +182,8 @@ def test_main_selection_abnormal(capsys, monkeypatch, input_str, exception_outpu
             + "\n\n"
             + "0. 購入をやめますか？\n"
             + "1.コーラ:投入金額が足りません。\n"
+            + "2.レッドブル:投入金額が足りません。\n"
+            + "3.水:投入金額が足りません。\n"
             + "どのドリンクを購入しますか。: 購入をやめます。\n"
             "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
         ),
@@ -189,10 +193,14 @@ def test_main_selection_abnormal(capsys, monkeypatch, input_str, exception_outpu
             + "\n\n"
             + "0. 購入をやめますか？\n"
             + "1.コーラ:投入金額が足りません。\n"
+            + "2.レッドブル:投入金額が足りません。\n"
+            + "3.水:投入金額が足りません。\n"
             + "どのドリンクを購入しますか。: 無効な選択です。再度選択してください。\n"
             "\n\n"
             + "0. 購入をやめますか？\n"
             + "1.コーラ:投入金額が足りません。\n"
+            + "2.レッドブル:投入金額が足りません。\n"
+            + "3.水:投入金額が足りません。\n"
             + "どのドリンクを購入しますか。: 購入をやめます。\n"
             "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
         ),
@@ -258,6 +266,8 @@ def test_main_selection4_normal(capsys, monkeypatch, input_str, exception_output
             + "\n\n"
             + "0. 購入をやめますか？\n"
             + "1.コーラ:購入可能です。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
             + "どのドリンクを購入しますか。: コーラを購入しました。\n"
             "\n\n" + MENU_PROMPT + "現在の売上は120円です。\n"
             "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
