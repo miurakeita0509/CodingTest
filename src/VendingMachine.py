@@ -30,8 +30,8 @@ class VendingMachine:
         return self.sales_management.get_sales()
 
     # ジュースの情報を返す
-    def get_juice_info(self):
-        return self.juice_management.get_juice_info()
+    def get_juice_info(self, juice_name):
+        return self.juice_management.get_juice_info(juice_name)
 
     # ジュースの購入
     def purchase(self, juice_name):
@@ -41,7 +41,7 @@ class VendingMachine:
             juice_price = self.juice_management.get_juice_info(juice_name)["price"]
             self.money_management.total_entry_amount -= juice_price
             self.juice_management.decrease_juice_stock(juice_name)
-            self.sales_management.record_juice_sales(self.juice_management, juice_name)
+            self.sales_management.record_juice_sales(juice_price)
             return f"{juice_name}を購入しました。"
         else:
             return f"{juice_name}は購入できません。"
@@ -50,7 +50,7 @@ class VendingMachine:
         while True:
             print("\n")
             index_name_map = self.juice_management.show_juice_menu(
-                self.money_management
+                self.money_management.get_total_amount()
             )
             select = input("どのドリンクを購入しますか。: ")
             if select.isdigit() and int(select) == 0:
