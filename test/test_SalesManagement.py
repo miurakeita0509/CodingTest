@@ -9,32 +9,18 @@ sys.path.append(str(Path(__file__).parent.parent / "src"))
 from src.SalesManagement import SalesManagement
 
 
-class MockJuiceManagement:
-    def __init__(self):
-        self.juice = {
-            "コーラ": {"name": "コーラ", "price": 120, "stock": 5},
-        }
-
-    def get_juice_info(self, juice_name=None):
-        if juice_name:
-            return self.juice.get(juice_name)
-        return self.juice
-
-
 @pytest.mark.parametrize(
     (
-        "juice_name",
-        "expected_sales",
+        "juice_price",
         "expected_result",
     ),
     [
-        ("コーラ", 120, True),
+        (120, True),
     ],
 )
-def test_DataStore_normal(juice_name, expected_sales, expected_result):
-    juice_management = MockJuiceManagement()
-    data_store = SalesManagement()
-    result = data_store.record_juice_sales(juice_management, juice_name)
+def test_record_juice_sales_normal(juice_price, expected_result):
+    sales_management = SalesManagement()
+    result = sales_management.record_juice_sales(juice_price)
 
-    assert data_store.get_sales() == expected_sales
+    assert sales_management.get_sales() == 120
     assert result == expected_result
