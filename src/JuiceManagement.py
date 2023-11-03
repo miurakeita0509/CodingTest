@@ -2,6 +2,8 @@ class JuiceManagement:
     def __init__(self):
         self.juice = {
             "コーラ": {"name": "コーラ", "price": 120, "stock": 5},
+            "レッドブル": {"name": "レッドブル", "price": 200, "stock": 5},
+            "水": {"name": "水", "price": 100, "stock": 5},
         }
 
     # ジュースの情報を返す
