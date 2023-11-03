@@ -26,15 +26,12 @@ class JuiceManagement:
         return False
 
     # 購入可能かどうかの表示
-    def show_juice_menu(self, money_management):
+    def show_juice_menu(self, total_amount):
         avairable_juice = self.get_juice_info()
         index_name_map = {}
         print("0. 購入をやめますか？")
         for index, (name, juice) in enumerate(avairable_juice.items(), 1):
-            if (
-                money_management.get_total_amount() >= juice["price"]
-                and juice["stock"] > 0
-            ):
+            if total_amount >= juice["price"] and juice["stock"] > 0:
                 status = "購入可能です。"
             elif juice["stock"] == 0:
                 status = "在庫がありません。"
