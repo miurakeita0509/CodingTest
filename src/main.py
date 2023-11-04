@@ -42,6 +42,7 @@ def main():
                 status, selected_juice = vending_machine.select_juice_purchase()
                 if status == "success":
                     print(f"{selected_juice}を購入しました。")
+                    print(vending_machine.refund())
                     break
                 elif status == "failed":
                     print(f"{selected_juice}は購入できません。再度選択してください。")

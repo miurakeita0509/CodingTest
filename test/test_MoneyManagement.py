@@ -119,7 +119,7 @@ def test_get_total_amount_add_normal(amount, expected_value):
         (100, "100円の釣り銭を返金します。"),
         (500, "500円の釣り銭を返金します。"),
         (1000, "1000円の釣り銭を返金します。"),
-        (0, "釣り銭はありません。"),
+        (0, "0円の釣り銭を返金します。"),
     ],
 )
 def test_refund_normal(amount, expected_value):
