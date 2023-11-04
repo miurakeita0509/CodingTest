@@ -33,12 +33,13 @@ class JuiceManagement:
         index_name_map = {}
         print("0. 購入をやめますか？")
         for index, (name, juice) in enumerate(avairable_juice.items(), 1):
+            juice_price = juice["price"]
             if total_amount >= juice["price"] and juice["stock"] > 0:
                 status = "購入可能です。"
             elif juice["stock"] == 0:
                 status = "在庫がありません。"
             else:
                 status = "投入金額が足りません。"
-            print(f"{index}.{name}:{status}")
+            print(f"{index}.{name} {juice_price}円 : {status}")
             index_name_map[index] = name
         return index_name_map
