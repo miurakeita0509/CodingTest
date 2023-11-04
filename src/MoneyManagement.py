@@ -26,9 +26,7 @@ class MoneyManagement:
 
     # 釣り銭を出力
     def refund(self):
-        if self.total_entry_amount > 0:
+        if self.total_entry_amount >= 0:
             temporary_storing = self.total_entry_amount
             self.total_entry_amount = 0
             return f"{temporary_storing}円の釣り銭を返金します。"
-        else:
-            return "釣り銭はありません。"
