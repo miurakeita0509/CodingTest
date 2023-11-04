@@ -12,7 +12,7 @@ class JuiceManagement:
             return self.juice.get(juice_name)
         return self.juice
 
-    # step4 投入金額、在庫の点で、コーラが購入できるかどうか
+    # 投入金額、在庫の点で、コーラが購入できるかどうか
     def can_purchase(self, juice_name, amount):
         juice = self.get_juice_info(juice_name)
         if not juice:
@@ -20,7 +20,7 @@ class JuiceManagement:
         trueorfalse = (amount >= juice["price"]) and (juice["stock"] > 0)
         return trueorfalse
 
-    # step4 在庫を減らす
+    # 在庫を減らす
     def decrease_juice_stock(self, juice_name):
         if self.juice[juice_name]["stock"] > 0:
             self.juice[juice_name]["stock"] -= 1
