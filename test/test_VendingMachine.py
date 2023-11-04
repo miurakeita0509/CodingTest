@@ -10,7 +10,7 @@ from src.VendingMachine import VendingMachine
 from src.JuiceManagement import JuiceManagement
 from src.MoneyManagement import MoneyManagement
 from src.SalesManagement import SalesManagement
-from unittest.mock import Mock
+from unittest.mock import Mock, patch
 
 
 @pytest.mark.parametrize(
@@ -123,7 +123,7 @@ def test_get_total_amount_add_normal(amount, expected_value):
         (100, "100円の釣り銭を返金します。"),
         (500, "500円の釣り銭を返金します。"),
         (1000, "1000円の釣り銭を返金します。"),
-        (0, "釣り銭はありません。"),
+        (0, "0円の釣り銭を返金します。"),
     ],
 )
 def test_refund_normal(amount, expected_value):
@@ -147,35 +147,6 @@ def test_money_exception_error(amount, expected_value):
     vending_machine = VendingMachine()
     message = vending_machine.insert_coin_or_payout(amount)
     assert message == expected_value
-
-
-# @pytest.mark.parametrize(
-#     (
-#         "juice_price",
-#         "expected_result",
-#     ),
-#     [
-#         (120, True),
-#     ],
-# )
-# def test_record_juice_sales_normal(juice_price, expected_result):
-#     vending_machine = VendingMachine()
-#     result = vending_machine.record_juice_sales(juice_price)
-#     assert result == expected_result
-
-
-# @pytest.mark.parametrize(
-#     (
-#         "juice_price",
-#         "expected_result",
-#     ),
-#     [
-#         (120, True),
-#     ],
-# )
-# def test_get_sales_normal(juice_price, expected_result):
-#     vending_machine = VendingMachine()
-#     assert vending_machine.get_sales() == 120
 
 
 @pytest.mark.parametrize(
@@ -233,3 +204,40 @@ def test_purchase_normal(
     vending_machine.money_management.total_entry_amount = total_money
     result = vending_machine.purchase(juice_name)
     assert result == expected_result
+
+
+@pytest.mark.parametrize(
+    (
+        "input_str",
+        "juice_name",
+        "show_juice_menu_return",
+        "stock_return",
+        "total_money",
+        "expected_result",
+    ),
+    [
+        ("1", "コーラ", {1: "コーラ"}, 0, 150, ("failed", "コーラ")),
+    ],
+)
+def test_select_juice_purchase_no_stock(
+    vending_machine,
+    input_str,
+    juice_name,
+    show_juice_menu_return,
+    stock_return,
+    total_money,
+    expected_result,
+):
+    with patch("builtins.input", side_effect=[input_str]):
+        vending_machine.juice_management.show_juice_menu.return_value = (
+            show_juice_menu_return
+        )
+        vending_machine.juice_management.get_juice_info.return_value = {
+            "price": 120,
+            "stock": stock_return,
+        }
+        vending_machine.money_management.total_entry_amount = total_money
+        purchase_mock = Mock(return_value=f"{juice_name}は購入できません。")
+        vending_machine.purchase = purchase_mock
+        result = vending_machine.select_juice_purchase()
+        assert result == expected_result

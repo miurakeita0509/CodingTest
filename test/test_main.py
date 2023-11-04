@@ -7,6 +7,8 @@ from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent))
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 from src.main import main, MENU_PROMPT
+from src.VendingMachine import VendingMachine
+from unittest.mock import Mock, patch
 
 
 # UIのテストコード
@@ -87,7 +89,7 @@ def test_main_selection2_normal(capsys, monkeypatch, input_str, exception_output
     [
         (
             "3\n" "6\n",
-            MENU_PROMPT + "釣り銭はありません。\n" "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
+            MENU_PROMPT + "0円の釣り銭を返金します。\n" "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
         ),
         (
             "1\n" "10\n" "3\n" "6\n",
@@ -173,7 +175,7 @@ def test_main_selection_abnormal(capsys, monkeypatch, input_str, exception_outpu
             + "1.コーラ:購入可能です。\n"
             + "2.レッドブル:購入可能です。\n"
             + "3.水:購入可能です。\n"
-            + "どのドリンクを購入しますか。: コーラを購入しました。\n"
+            + "どのドリンクを購入しますか。: コーラを購入しました。\n880円の釣り銭を返金します。\n"
             "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
         ),
         (
@@ -216,39 +218,119 @@ def test_main_selection4_normal(capsys, monkeypatch, input_str, exception_output
     assert captured.out == exception_output
 
 
-# class MockJuiceManagement(JuiceManagement):
-#     def __init__(self, juice_name, amount):
-#         super().__init__(juice_name, amount)
-#         self.juice["コーラ"]["stock"] = 0
+@pytest.mark.parametrize(
+    ("input_str", "exception_output"),
+    [
+        (
+            "1\n"
+            "1000\n"
+            "4\n"
+            "1\n"
+            "1\n"
+            "1000\n"
+            "4\n"
+            "1\n"
+            "1\n"
+            "1000\n"
+            "4\n"
+            "1\n"
+            "1\n"
+            "1000\n"
+            "4\n"
+            "1\n"
+            "1\n"
+            "1000\n"
+            "4\n"
+            "1\n"
+            "1\n"
+            "1000\n"
+            "4\n"
+            "1\n"
+            "0\n"
+            "6\n",
+            MENU_PROMPT + "お金を入れてください。: 1000円を投入しました。\n"
+            "\n\n"
+            + MENU_PROMPT
+            + "\n\n"
+            + "0. 購入をやめますか？\n"
+            + "1.コーラ:購入可能です。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
+            + "どのドリンクを購入しますか。: コーラを購入しました。\n880円の釣り銭を返金します。\n"
+            + "\n\n"
+            + MENU_PROMPT
+            + "お金を入れてください。: 1000円を投入しました。\n"
+            "\n\n"
+            + MENU_PROMPT
+            + "\n\n"
+            + "0. 購入をやめますか？\n"
+            + "1.コーラ:購入可能です。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
+            + "どのドリンクを購入しますか。: コーラを購入しました。\n880円の釣り銭を返金します。\n"
+            + "\n\n"
+            + MENU_PROMPT
+            + "お金を入れてください。: 1000円を投入しました。\n"
+            "\n\n"
+            + MENU_PROMPT
+            + "\n\n"
+            + "0. 購入をやめますか？\n"
+            + "1.コーラ:購入可能です。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
+            + "どのドリンクを購入しますか。: コーラを購入しました。\n880円の釣り銭を返金します。\n"
+            + "\n\n"
+            + MENU_PROMPT
+            + "お金を入れてください。: 1000円を投入しました。\n"
+            "\n\n"
+            + MENU_PROMPT
+            + "\n\n"
+            + "0. 購入をやめますか？\n"
+            + "1.コーラ:購入可能です。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
+            + "どのドリンクを購入しますか。: コーラを購入しました。\n880円の釣り銭を返金します。\n"
+            + "\n\n"
+            + MENU_PROMPT
+            + "お金を入れてください。: 1000円を投入しました。\n"
+            "\n\n"
+            + MENU_PROMPT
+            + "\n\n"
+            + "0. 購入をやめますか？\n"
+            + "1.コーラ:購入可能です。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
+            + "どのドリンクを購入しますか。: コーラを購入しました。\n880円の釣り銭を返金します。\n"
+            + "\n\n"
+            + MENU_PROMPT
+            + "お金を入れてください。: 1000円を投入しました。\n"
+            "\n\n"
+            + MENU_PROMPT
+            + "\n\n"
+            + "0. 購入をやめますか？\n"
+            + "1.コーラ:在庫がありません。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
+            + "どのドリンクを購入しますか。: コーラは購入できません。再度選択してください。\n"
+            + "\n\n"
+            + "0. 購入をやめますか？\n"
+            + "1.コーラ:在庫がありません。\n"
+            + "2.レッドブル:購入可能です。\n"
+            + "3.水:購入可能です。\n"
+            + "どのドリンクを購入しますか。: 購入をやめます。\n"
+            "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
+        ),
+    ],
+)
+def test_main_selection4_stock0_normal(
+    capsys, monkeypatch, input_str, exception_output
+):
+    monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
+    main()
+    # 標準出力のキャプチャを取得
+    captured = capsys.readouterr()
 
-#     def can_purchase(self, juice_name, total_money):
-#         if juice_name == "コーラ":
-#             return False
-#         return super().can_purchase(juice_name, total_money)
-
-
-# @pytest.mark.parametrize(
-#     ("input_str", "exception_output"),
-#     [
-#         (
-#             "1\n" "1000\n" "4\n" "1\n" "0\n" "6\n",
-#             MENU_PROMPT + "お金を入れてください。: 1000円を投入しました。\n"
-#             "\n\n" + MENU_PROMPT + "\n\n" + "どのドリンクを購入しますか。: コーラは購入できません。再度選択してください。\n"
-#             "\n\n" + "どのドリンクを購入しますか。: 購入をやめます。\n"
-#             "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
-#         ),
-#     ],
-# )
-# def test_main_selection4_stock0_normal(
-#     capsys, monkeypatch, input_str, exception_output
-# ):
-#     monkeypatch.setattr("src.main.JuiceManagement", MockJuiceManagement)
-#     monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
-#     main()
-#     # 標準出力のキャプチャを取得
-#     captured = capsys.readouterr()
-
-#     assert captured.out == exception_output
+    assert captured.out == exception_output
 
 
 @pytest.mark.parametrize(
@@ -268,7 +350,7 @@ def test_main_selection4_normal(capsys, monkeypatch, input_str, exception_output
             + "1.コーラ:購入可能です。\n"
             + "2.レッドブル:購入可能です。\n"
             + "3.水:購入可能です。\n"
-            + "どのドリンクを購入しますか。: コーラを購入しました。\n"
+            + "どのドリンクを購入しますか。: コーラを購入しました。\n880円の釣り銭を返金します。\n"
             "\n\n" + MENU_PROMPT + "現在の売上は120円です。\n"
             "\n\n" + MENU_PROMPT + "自販機を終了します。\n",
         ),
