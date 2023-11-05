@@ -1,15 +1,10 @@
 import pytest
 import sys
-import os
-import io
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 from src.VendingMachine import VendingMachine
-from src.JuiceManagement import JuiceManagement
-from src.MoneyManagement import MoneyManagement
-from src.SalesManagement import SalesManagement
 from unittest.mock import Mock, patch
 
 
@@ -43,36 +38,34 @@ def test_intger_insert_exception(input_str, expected_value):
 @pytest.mark.parametrize(
     ("amount", "expected_value"),
     [
-        (10, 10),
-        (50, 50),
-        (100, 100),
-        (500, 500),
-        (1000, 1000),
+        (10, "10円を投入しました。"),
+        (50, "50円を投入しました。"),
+        (100, "100円を投入しました。"),
+        (500, "500円を投入しました。"),
+        (1000, "1000円を投入しました。"),
     ],
 )
 def test_insert_coin_or_payout_normal(amount, expected_value):
     vending_machine = VendingMachine()
-    vending_machine.insert_coin_or_payout(amount)
-    assert vending_machine.get_total_amount() == expected_value
+    assert vending_machine.insert_coin_or_payout(amount) == expected_value
 
 
 @pytest.mark.parametrize(
     ("amount", "expected_value"),
     [
-        (2, False),  # 無効なお金
-        ("a", False),  # 文字列
-        (" ", False),  # 空白
-        ("'''", False),  # 空文字
-        (-1, False),  # 負の数
-        (10000000000, False),  # ある程度大きい数ex.百億
-        (0.1, False),  # 小数点
-        ("\n", False),  # 改行
+        (2, "無効なお金です。"),  # 無効なお金
+        ("a", "無効なお金です。"),  # 文字列
+        (" ", "無効なお金です。"),  # 空白
+        ("'''", "無効なお金です。"),  # 空文字
+        (-1, "無効なお金です。"),  # 負の数
+        (10000000000, "無効なお金です。"),  # ある程度大きい数ex.百億
+        (0.1, "無効なお金です。"),  # 小数点
+        ("\n", "無効なお金です。"),  # 改行
     ],
 )
 def test_insert_coin_or_payout_abnormal(amount, expected_value):
     vending_machine = VendingMachine()
-    vending_machine.insert_coin_or_payout(amount)
-    assert vending_machine.get_total_amount() == expected_value
+    assert vending_machine.insert_coin_or_payout(amount) == expected_value
 
 
 class MockMoneyManagement:
