@@ -1,14 +1,11 @@
 import pytest
 import sys
-import os
 import io
 from pathlib import Path
 
 sys.path.append(str(Path(__file__).parent.parent))
 sys.path.append(str(Path(__file__).parent.parent / "src"))
 from src.main import main, MENU_PROMPT
-from src.VendingMachine import VendingMachine
-from unittest.mock import Mock, patch
 
 
 # UIのテストコード
@@ -32,7 +29,6 @@ def test_main_selection1_normal(capsys, monkeypatch, input_str, exception_output
     main()
     # 標準出力のキャプチャを取得
     captured = capsys.readouterr()
-
     assert captured.out == exception_output
 
 
@@ -78,9 +74,7 @@ def test_main_selection1_normal(capsys, monkeypatch, input_str, exception_output
 def test_main_selection2_normal(capsys, monkeypatch, input_str, exception_output):
     monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
     main()
-    # 標準出力のキャプチャを取得
     captured = capsys.readouterr()
-
     assert captured.out == exception_output
 
 
@@ -126,9 +120,7 @@ def test_main_selection2_normal(capsys, monkeypatch, input_str, exception_output
 def test_main_selection3_normal(capsys, monkeypatch, input_str, exception_output):
     monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
     main()
-    # 標準出力のキャプチャを取得
     captured = capsys.readouterr()
-
     assert captured.out == exception_output
 
 
@@ -156,9 +148,7 @@ def test_main_selection3_normal(capsys, monkeypatch, input_str, exception_output
 def test_main_selection_abnormal(capsys, monkeypatch, input_str, exception_output):
     monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
     main()
-    # 標準出力のキャプチャを取得
     captured = capsys.readouterr()
-
     assert captured.out == exception_output
 
 
@@ -211,10 +201,7 @@ def test_main_selection_abnormal(capsys, monkeypatch, input_str, exception_outpu
 def test_main_selection4_normal(capsys, monkeypatch, input_str, exception_output):
     monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
     main()
-
-    # 標準出力のキャプチャを取得
     captured = capsys.readouterr()
-
     assert captured.out == exception_output
 
 
@@ -327,9 +314,7 @@ def test_main_selection4_stock0_normal(
 ):
     monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
     main()
-    # 標準出力のキャプチャを取得
     captured = capsys.readouterr()
-
     assert captured.out == exception_output
 
 
@@ -359,9 +344,7 @@ def test_main_selection4_stock0_normal(
 def test_main_selection5_normal(capsys, monkeypatch, input_str, exception_output):
     monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
     main()
-    # 標準出力のキャプチャを取得
     captured = capsys.readouterr()
-
     assert captured.out == exception_output
 
 
@@ -377,7 +360,5 @@ def test_main_selection5_normal(capsys, monkeypatch, input_str, exception_output
 def test_main_selection6_normal(capsys, monkeypatch, input_str, exception_output):
     monkeypatch.setattr("sys.stdin", io.StringIO(input_str))
     main()
-    # 標準出力のキャプチャを取得
     captured = capsys.readouterr()
-
     assert captured.out == exception_output
