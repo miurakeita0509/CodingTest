@@ -29,10 +29,10 @@ class JuiceManagement:
 
     # 購入可能かどうかの表示
     def show_juice_menu(self, total_amount):
-        avairable_juice = self.get_juice_info()
+        available_juice = self.get_juice_info()
         index_name_map = {}
         print("0. 購入をやめますか？")
-        for index, (name, juice) in enumerate(avairable_juice.items(), 1):
+        for index, (name, juice) in enumerate(available_juice.items(), 1):
             juice_price = juice["price"]
             if total_amount >= juice["price"] and juice["stock"] > 0:
                 status = "購入可能です。"
