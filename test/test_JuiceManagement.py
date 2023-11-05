@@ -1,6 +1,5 @@
 import pytest
 import sys
-import os
 import io
 from pathlib import Path
 
@@ -48,27 +47,40 @@ def test_get_juice_info_abnormal(juice_name, expected_value):
         ("コーラ", 130, True),  # 在庫5の状態かつ投入金額が上回ってる場合
         ("コーラ", 150, False),  # 在庫0の状態
         ("無名なジュース", 140, None),  # クラスに該当する名前がない場合
+        ("レッドブル", 100, False),  # 在庫5の状態かつ投入金額が下回ってる場合
+        ("レッドブル", 200, True),  # 在庫5の状態かつ投入金額が同値の場合
+        ("レッドブル", 210, True),  # 在庫5の状態かつ投入金額が上回ってる場合
+        ("レッドブル", 250, False),  # 在庫0の状態
+        ("水", 90, False),  # 在庫5の状態かつ投入金額が下回ってる場合
+        ("水", 100, True),  # 在庫5の状態かつ投入金額が同値の場合
+        ("水", 110, True),  # 在庫5の状態かつ投入金額が上回ってる場合
+        ("水", 150, False),  # 在庫0の状態
     ],
 )
 def test_can_purchase_normal(juice_name, amount, expected_value):
     juice_management = JuiceManagement()
     if juice_name == "コーラ" and amount == 150:
         juice_management.juice["コーラ"]["stock"] = 0
+    if juice_name == "レッドブル" and amount == 250:
+        juice_management.juice["レッドブル"]["stock"] = 0
+    if juice_name == "水" and amount == 150:
+        juice_management.juice["水"]["stock"] = 0
     assert juice_management.can_purchase(juice_name, amount) == expected_value
 
 
 @pytest.mark.parametrize(
-    ("juice_name", "amount", "expected_value"),
+    ("juice_name", "expected_value"),
     [
-        ("コーラ", 100, True),
-        ("コーラ", 150, False),
+        ("コーラ", 4),
+        ("レッドブル", 4),
+        ("水", 4),
     ],
 )
-def test_decrease_juice_stock_normal(juice_name, amount, expected_value):
+def test_decrease_juice_stock_normal(juice_name, expected_value):
     juice_management = JuiceManagement()
-    if juice_name == "コーラ" and amount == 150:
-        juice_management.juice["コーラ"]["stock"] = 0
-    assert juice_management.decrease_juice_stock(juice_name) == expected_value
+    juice_management.decrease_juice_stock(juice_name)
+    stock = juice_management.juice[juice_name]["stock"]
+    assert stock == expected_value
 
 
 @pytest.mark.parametrize(
