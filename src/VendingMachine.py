@@ -46,6 +46,7 @@ class VendingMachine:
         else:
             return f"{juice_name}は購入できません。"
 
+    # ジュースの選択
     def select_juice_purchase(self):
         while True:
             print("\n")

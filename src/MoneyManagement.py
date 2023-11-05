@@ -2,6 +2,8 @@ class MoneyManagement:
     # 投入金額の総計
     def __init__(self):
         self.total_entry_amount = 0
+        self.valid_money = [10, 50, 100, 500, 1000]
+        self.invalid_money = [1, 5, 2000, 5000, 10000]
 
     # 整数選定
     def isinteger_insert(self, amount):
@@ -12,10 +14,10 @@ class MoneyManagement:
 
     # 10円玉、50円玉、100円玉、500円玉、1000円札を受け付ける
     def insert_coin_or_payout(self, amount_integer):
-        if amount_integer in [10, 50, 100, 500, 1000]:
+        if amount_integer in self.valid_money:
             self.total_entry_amount += amount_integer
             return f"{amount_integer}円を投入しました。"
-        elif amount_integer in [1, 5, 2000, 5000, 10000]:  # 実在するお金
+        elif amount_integer in self.invalid_money:  # 実在するお金
             return f"このお金は受け付けられません。{amount_integer}円を返金します。"
         else:
             return "無効なお金です。"
