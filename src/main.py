@@ -21,22 +21,25 @@ def main():
         print(MENU_PROMPT, end="")
         selection = input()
 
+        # お金の投入
         if selection == "1":
             amount = input("お金を入れてください。: ")
             amount_integer = vending_machine.isinteger_amount(amount)
-
             if amount_integer is None:
                 print("無効な入力です。お金を入れてください。")
             else:
                 print(vending_machine.insert_coin_or_payout(amount_integer))
 
+        # 総計の確認
         elif selection == "2":
             total_entry_amount = vending_machine.get_total_amount()
             print(f"投入金額の総計は{total_entry_amount}円です。")
 
+        # 売上の確認
         elif selection == "3":
             print(vending_machine.refund())
 
+        # 取扱ドリンクの購入可否
         elif selection == "4":
             while True:
                 status, selected_juice = vending_machine.select_juice_purchase()
@@ -52,9 +55,12 @@ def main():
                 elif status == "invalid_select":
                     print("無効な選択です。再度選択してください。")
 
+        # 売上の確認
         elif selection == "5":
             current_sales = vending_machine.get_sales()
             print(f"現在の売上は{current_sales}円です。")
+
+        # 自販機の終了
         elif selection == "6":
             print("自販機を終了します。")
             break
